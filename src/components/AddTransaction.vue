@@ -6,6 +6,7 @@ const formData = reactive({
     description: "",
     amount: "",
     category: "",
+    details: "",
 });
 
 const emit = defineEmits(["newTransaction"]);
@@ -26,10 +27,12 @@ function handleSubmit() {
             day: "numeric",
             year: "numeric",
         }),
+        details: formData.details,
     };
     formData.description = "";
     formData.category = "";
     formData.amount = "";
+    formData.details = "";
     emit("newTransaction", newItemHistory);
 }
 </script>
@@ -71,6 +74,12 @@ function handleSubmit() {
                 />
                 <label for="expense">Expense</label>
             </div>
+            <textarea
+                name="details"
+                id="details"
+                placeholder="Add details"
+                v-model="formData.details"
+            ></textarea>
             <button type="submit" class="btn btn--primary">
                 Add new trnasaction
             </button>
@@ -99,6 +108,10 @@ function handleSubmit() {
             display: flex;
             gap: 10px;
             align-items: center;
+        }
+
+        textarea {
+            padding: 10px;
         }
 
         button {
