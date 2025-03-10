@@ -13,6 +13,7 @@
 
 <style lang="scss" scoped>
 .container {
+    position: relative;
     .content {
         h1 {
             text-align: center;

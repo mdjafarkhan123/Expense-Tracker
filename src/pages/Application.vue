@@ -4,17 +4,21 @@ import { ref, computed, provide, watch, onMounted } from "vue";
 const transactions = ref([
     {
         id: 1,
+        date: "Feb 19, 2024",
         description: "Freelance Web Development",
         amount: 1200,
         category: "income",
-        date: "Feb 19, 2024",
+        details:
+            "I have hired a senior front end web developer and a backend web developer to build my website.",
     },
     {
         id: 2,
+        date: "March 12, 2025",
         description: "Grocery Shopping",
         amount: 150,
         category: "expense",
-        date: "March 12, 2025",
+        details:
+            "I went to Savar city center. Bought a lot of item like a pair of shoes, ate some food on resturant and so on",
     },
 ]);
 
@@ -70,7 +74,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="container">
+    <div class="container app-container">
         <Balance :amount="currentBalance" />
         <Expenses :income="totalIncome" :expense="totalExpense" />
         <TransactionList @deleteItem="deleteTransaction" />
@@ -80,6 +84,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .container {
+    position: relative;
     flex-flow: column;
     max-width: 400px;
     outline: 1px dashed gray;

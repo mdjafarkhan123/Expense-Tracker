@@ -1,22 +1,46 @@
 <script setup>
-import { inject, defineEmits } from "vue";
+import { inject, defineEmits, ref, defineAsyncComponent } from "vue";
+
+const MyPopup = defineAsyncComponent(() => import("./Popup.vue"));
+const isOpen = ref(false);
+const transactonDetails = ref("");
 const transactionHistory = inject("transactions");
 const emit = defineEmits(["deleteItem"]);
 function handleDelete(id) {
     emit("deleteItem", id);
+}
+
+function showPopup(item) {
+    isOpen.value = !isOpen.value;
+    transactonDetails.value = item.details;
+}
+
+function closePopup() {
+    isOpen.value = false;
 }
 </script>
 
 <template>
     <div class="transaction">
         <h3 class="transaction__title">Recent transactions:</h3>
-
+        <div class="popup-wrapper" v-if="isOpen">
+            <MyPopup
+                :isOpen="isOpen"
+                :data="transactonDetails"
+                @closePopup="closePopup"
+            ></MyPopup>
+        </div>
         <ul class="transaction__list">
             <li
                 class="transaction__list-item"
                 v-for="item in transactionHistory"
                 :key="item.id"
             >
+                <button class="details" @click="showPopup(item)">
+                    <span class="details__icon">
+                        <i class="ri-message-3-line"></i>
+                    </span>
+                </button>
                 <div class="description">
                     {{ item.description }}
                     <span class="time">{{ item.date }}</span>
@@ -69,7 +93,15 @@ function handleDelete(id) {
             &:not(:last-child) {
                 border-bottom: 1px solid var(--color-border);
             }
-
+            .details {
+                background-color: rgb(210, 255, 235);
+                width: 35px;
+                height: 35px;
+                border-radius: 100vmax;
+                text-align: center;
+                line-height: 35px;
+                margin-right: -8px;
+            }
             .description {
                 flex-grow: 1;
                 .time {
